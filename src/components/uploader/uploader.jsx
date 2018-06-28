@@ -7,27 +7,46 @@ const { Header, Content } = Layout;
 export default class Uploader extends Component {
 
   state = {
-    uploaded: false
+    uploaded: false,
+    data: []
   };
 
   beforeUpload = (file) => {
     const reader = new FileReader();
+    let csvData = [];
 
+    // console.log(file.name);
     reader.onload = (e) => {
-      this.setState({
-        uploaded: true
-      });
-      message.success("Uploaded");
       const data = e.target.result;
       const workbook = XLSX.read(data, { type: 'binary' });
-      workbook.SheetNames.forEach(function (sheetName) {
-        let jsonArray = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
-        console.log(jsonArray);
+      workbook.SheetNames.forEach((sheetName) => {
+        csvData = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
       });
+      // console.log(csvData);
+      csvData = csvData.split("\n");
+      if(csvData[9]==="Bin No.,,Barcode,Style No,Color,Size,MRP,Quantity,Order No,Reservation No,,,,,,"){     
+        this.setState({
+          uploaded: true,
+          data: csvData
+        });
+        message.success("File uploaded successfully");
+        return false;
+      }
+      message.error("Please upload the correct file");
+    }
+
+    if(!file.name.includes(".xlsx")){
+      message.error("Please upload the correct file");
+      return false;
     }
 
     reader.readAsBinaryString(file);
     return false;
+  }
+
+  uploadFiles = () => {
+    const arr = this.state.data.map(x => x.split(","));
+    console.log(arr);
   }
 
   render() {
@@ -54,11 +73,12 @@ export default class Uploader extends Component {
                   name="avatar"
                   listType="picture-card"
                   className="avatar-uploader"
+                  multiple={false}
                   beforeUpload={this.beforeUpload}
                 >
                   {this.state.uploaded
-                     ? <Icon type="check-circle" style={{ fontSize: 36, color: 'green' }}/>
-                      : uploadButton}
+                    ? <Icon type="check-circle" style={{ fontSize: 36, color: '#87d068' }} />
+                    : uploadButton}
                 </Upload>
               </div>
               {this.state.uploaded
