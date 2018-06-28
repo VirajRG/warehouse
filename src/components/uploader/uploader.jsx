@@ -44,9 +44,31 @@ export default class Uploader extends Component {
     return false;
   }
 
-  uploadFiles = () => {
-    const arr = this.state.data.map(x => x.split(","));
-    console.log(arr);
+  createList = () => {
+    let bins = [];
+    let binNo = -1;
+    let binName = "";
+    let items = [];
+    let arr = this.state.data.map(x => x.split(","));
+    arr = arr.splice(10);
+    arr.forEach(row => { 
+      if(row[0] && !row[0].includes(":")) {
+        bins.push(row[0]);
+        binName = row[0];
+        binNo++;
+      }
+      if(row[4]) items.push({
+        binNo: binNo,
+        binName: binName,
+        barcode: row[2],
+        style: row[3],
+        color: row[4],
+        size: row[5]
+      });
+    });
+    console.log(bins);
+    console.log(items);
+    this.props.createList(bins, items);
   }
 
   render() {
@@ -82,7 +104,7 @@ export default class Uploader extends Component {
                 </Upload>
               </div>
               {this.state.uploaded
-                ? <Button onClick={this.uploadFiles}>
+                ? <Button onClick={this.createList}>
                   Scan Items
                   <Icon type="right" />
                 </Button>

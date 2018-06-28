@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import Uploader from './uploader';
+import PickList from './picklist';
   
 
 const mapDispatchToProps = (dispatch) => {
@@ -7,7 +7,9 @@ const mapDispatchToProps = (dispatch) => {
       upload : () => {
         console.log("upload");
       },
-      createList : (bins, items) => dispatch(createList(bins, items))
+      uploadFiles : (file) => {
+        console.log(file);
+      }
     };
 };
 const mapStateToProps = state => {
@@ -16,4 +18,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Uploader);
+export default connect(mapStateToProps, mapDispatchToProps)(PickList);
