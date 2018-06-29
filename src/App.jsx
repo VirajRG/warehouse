@@ -12,7 +12,7 @@ class App extends Component {
       <Router history={history}>
       <div>
         <Route exact path="/" component={UploaderContainer} />
-        <Route path="/picklist" component={PickListContainer} />
+        <Route path="/:pickListNo/:binName" component={PickListContainer} />
       </div>
       </Router>
     );

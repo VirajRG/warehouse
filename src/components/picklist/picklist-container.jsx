@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import PickList from './picklist';
+import { withRouter } from 'react-router-dom'
   
 
 const mapDispatchToProps = (dispatch) => {
@@ -19,4 +20,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PickList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PickList));

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import { Row, Col, Icon, Button, Upload, Layout, message } from 'antd';
 import * as XLSX from 'xlsx';
+import history from '../../history';
 const { Header, Content } = Layout;
 
 export default class Uploader extends Component {
@@ -78,6 +79,7 @@ export default class Uploader extends Component {
     console.log(items);
     console.log("No. of picklists: ", pickListNo);
     this.props.createList(items);
+    history.push("./"+items[0].pickListNo+"/"+items[0].binName);
   }
 
   render() {
