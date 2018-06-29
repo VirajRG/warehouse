@@ -1,5 +1,4 @@
-export const createList = (bins, items) => ({
+export const createList = (items) => ({
   type: 'CREATE_LIST',
-  bins,
   items
 })

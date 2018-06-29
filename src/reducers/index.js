@@ -4,7 +4,6 @@ const reducers = (state = initialState, action) => {
   switch (action.type) {
     case 'CREATE_LIST':
       return {
-        bins: action.bins,
         items: action.items
       }
     // case 'SET':

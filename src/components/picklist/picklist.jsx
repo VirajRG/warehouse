@@ -2,16 +2,16 @@ import React, { Component } from 'react'
 import { Row, Col, Icon, Button, Layout, message, List, Avatar } from 'antd';
 const { Header, Content } = Layout;
 
-const IconText = ({ items, bin }) => {
-  let itemCount = 0;
-  items.forEach(item => {
-    if(item.binName === bin) itemCount++;
-  });
+const IconText = ({quantity }) => {
+  // let itemCount = 0;
+  // items.forEach(item => {
+  //   if(item.binName === bin) itemCount++;
+  // });
   
   return(
   <span>
     <Icon type="scan" style={{ marginRight: 8 }} />
-    {itemCount}
+    {quantity}
   </span>
 );
 }
@@ -32,15 +32,15 @@ export default class PickList extends Component {
               <h1>Bins :</h1>
               <List
                 itemLayout="horizontal"
-                dataSource={this.props.bins}
+                dataSource={this.props.items}
                 renderItem={item => (
                   <List.Item
-                    key={item}
-                    actions={[<IconText bin={item} items={this.props.items} />]}
+                    key={item.PickList+item.binName}
+                    actions={[<IconText quantity={item.quantityLeft} />]}
                   >
                     <List.Item.Meta
                       avatar={<Avatar icon="shopping-cart" />}
-                      title={<a href="#">{item}</a>}
+                      title={<a href="#">{item.barcode}</a>}
                     // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                     />
                   </List.Item>

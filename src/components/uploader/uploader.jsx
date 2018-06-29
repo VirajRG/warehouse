@@ -23,7 +23,7 @@ export default class Uploader extends Component {
         csvData = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
       });
       // console.log(csvData);
-      csvData = csvData.split("\n");
+      csvData = csvData.split("\n"); //-------------change
       if(csvData[9]==="Bin No.,,Barcode,Style No,Color,Size,MRP,Quantity,Order No,Reservation No,,,,,,"){     
         this.setState({
           uploaded: true,
@@ -35,7 +35,7 @@ export default class Uploader extends Component {
       message.error("Please upload the correct file");
     }
 
-    if(!file.name.includes(".xlsx")){
+    if(!file.name.includes(".xlsx")){ //-------------change
       message.error("Please upload the correct file");
       return false;
     }
@@ -45,30 +45,39 @@ export default class Uploader extends Component {
   }
 
   createList = () => {
-    let bins = [];
-    let binNo = -1;
+    // let bins = [];
     let binName = "";
+    let pickListNo = 0;
     let items = [];
     let arr = this.state.data.map(x => x.split(","));
-    arr = arr.splice(10);
+    arr = arr.splice(10); //-------------change
     arr.forEach(row => { 
+
+      if(row[5] === "Total") //-------------change
+        pickListNo++;
+
       if(row[0] && !row[0].includes(":")) {
-        bins.push(row[0]);
+        // bins.push(row[0]);
         binName = row[0];
-        binNo++;
       }
       if(row[4]) items.push({
-        binNo: binNo,
+        pickListNo: pickListNo,
         binName: binName,
-        barcode: row[2],
+        barcode: row[2].split(".")[0],
         style: row[3],
         color: row[4],
-        size: row[5]
+        size: row[5],
+        mrp: parseFloat(row[6]),
+        quantity: parseInt(row[7]),
+        quantityLeft: parseInt(row[7]),
+        orderNo: row[8],
+        reservationNo: row[9]
       });
     });
-    console.log(bins);
+    // console.log(bins);
     console.log(items);
-    this.props.createList(bins, items);
+    console.log("No. of picklists: ", pickListNo);
+    this.props.createList(items);
   }
 
   render() {

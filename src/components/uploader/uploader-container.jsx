@@ -8,7 +8,7 @@ const mapDispatchToProps = (dispatch) => {
       upload : () => {
         console.log("upload");
       },
-      createList : (bins, items) => dispatch(createList(bins, items))
+      createList : (items) => dispatch(createList(items))
     };
 };
 const mapStateToProps = state => {
