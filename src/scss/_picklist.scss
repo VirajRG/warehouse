@@ -13,5 +13,9 @@
   .content {
     position:relative;
     top:3%;
+    .ant-list {
+      height: 430px;
+      overflow-y: scroll;
+    }
   }
 }

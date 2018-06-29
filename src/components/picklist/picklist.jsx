@@ -45,8 +45,8 @@ export default class PickList extends Component {
             <Col className="col" xs={{ span: 12, offset: 6 }}>
               <Row>
                 <Col xs={{ span: 12 }}>
-                  <h2>Picklist No: <span style={{color: "#909090", fontSize: '32px'}}>{currentPickList}</span></h2>
-                  <h2>Bin Name: <span style={{color: "#909090", fontSize: '32px'}}>{currentBinName}</span></h2>
+                  <h2 style={{marginBottom: '0px'}}>Picklist No: <span style={{color: "#909090", fontSize: '32px'}}>{currentPickList}</span></h2>
+                  <h2 style={{marginBottom: '0px'}}>Bin Name: <span style={{color: "#909090", fontSize: '32px'}}>{currentBinName}</span></h2>
                 </Col>
                 <Col xs={{ span: 12 }}>
               <span className="icon" style={{ display: "block", textAlign: "end" }}>
