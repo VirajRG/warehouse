@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import Uploader from './uploader';
+import { createList } from '../../actions';
   
 
 const mapDispatchToProps = (dispatch) => {
@@ -12,7 +13,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 const mapStateToProps = state => {
     return {
-      user:state.user.username
+      // user:state.user.username
     };
 };
 

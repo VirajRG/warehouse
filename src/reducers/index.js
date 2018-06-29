@@ -2,119 +2,124 @@ const initialState = {}
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET':
-      if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
-      var nextState = Object.assign({}, state)
-      var ok = storeValue(nextState, action.state, action.value)
-      if (!ok) return state
-      return nextState
+    case 'CREATE_LIST':
+      return {
+        bins: action.bins,
+        items: action.items
+      }
+    // case 'SET':
+    //   if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
+    //   var nextState = Object.assign({}, state)
+    //   var ok = storeValue(nextState, action.state, action.value)
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'RESET':
-      if (!action.state || typeof action.state !== 'string') return state
-      if (action.state === '') return initialState
-      var nextState = Object.assign({}, state)
-      const {
-        found,
-        value
-      } = loadValue(initialState, action.state)
-      if (!found) return state
-      var ok = storeValue(nextState, action.state, value)
-      if (!ok) return state
-      return nextState
+    // case 'RESET':
+    //   if (!action.state || typeof action.state !== 'string') return state
+    //   if (action.state === '') return initialState
+    //   var nextState = Object.assign({}, state)
+    //   const {
+    //     found,
+    //     value
+    //   } = loadValue(initialState, action.state)
+    //   if (!found) return state
+    //   var ok = storeValue(nextState, action.state, value)
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'PUSH':
-      if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
-      if (!found || !Array.isArray(value)) return state
-      var ok = storeValue(nextState, action.state, [...value, action.value])
-      if (!ok) return state
-      return nextState
+    // case 'PUSH':
+    //   if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
+    //   if (!found || !Array.isArray(value)) return state
+    //   var ok = storeValue(nextState, action.state, [...value, action.value])
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'PREPEND':
-      if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
-      if (!found || !Array.isArray(value)) return state
-      var ok = storeValue(nextState, action.state, [action.value, ...value])
-      if (!ok) return state
-      return nextState
+    // case 'PREPEND':
+    //   if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
+    //   if (!found || !Array.isArray(value)) return state
+    //   var ok = storeValue(nextState, action.state, [action.value, ...value])
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'REMOVE_BY_VALUE':
-      if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
-      if (!found || !Array.isArray(value)) return state
-      var ok = storeValue(nextState, action.state, value.filter(item => item !== action.value))
-      if (!ok) return state
-      return nextState
+    // case 'REMOVE_BY_VALUE':
+    //   if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
+    //   if (!found || !Array.isArray(value)) return state
+    //   var ok = storeValue(nextState, action.state, value.filter(item => item !== action.value))
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'REMOVE_BY_INDEX':
-      if (!action.state || typeof action.state !== 'string' || action.index === undefined || isNaN(action.index)) return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
-      if (!found || !Array.isArray(value)) return state
-      var ok = storeValue(nextState, action.state, value.filter((item, index) => index !== action.index))
-      if (!ok) return state
-      return nextState
+    // case 'REMOVE_BY_INDEX':
+    //   if (!action.state || typeof action.state !== 'string' || action.index === undefined || isNaN(action.index)) return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
+    //   if (!found || !Array.isArray(value)) return state
+    //   var ok = storeValue(nextState, action.state, value.filter((item, index) => index !== action.index))
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'REMOVE_BY_KEY':
-      if (!action.state || typeof action.state !== 'string' || !action.key || typeof action.key !== 'string' || action.value === undefined) return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
-      if (!found || !Array.isArray(value)) return state
-      var ok = storeValue(nextState, action.state, value.filter(item => item[action.key] !== action.value))
-      if (!ok) return state
-      return nextState
+    // case 'REMOVE_BY_KEY':
+    //   if (!action.state || typeof action.state !== 'string' || !action.key || typeof action.key !== 'string' || action.value === undefined) return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
+    //   if (!found || !Array.isArray(value)) return state
+    //   var ok = storeValue(nextState, action.state, value.filter(item => item[action.key] !== action.value))
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'MODIFY_ARRAY':
-      if (!action.state || typeof action.state !== 'string' || !action.cb || typeof action.cb !== 'function') return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
+    // case 'MODIFY_ARRAY':
+    //   if (!action.state || typeof action.state !== 'string' || !action.cb || typeof action.cb !== 'function') return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
 
-      if (!found || !Array.isArray(value)) return state
-      var result = value.slice()
-      if (!action.find || typeof action.find !== 'function') result = result.map(obj => action.cb(obj))
-      else result = result.map(obj => {
-        const ok = action.find(obj)
-        if (ok) return action.cb(obj)
-        else return obj
-      })
-      console.log('Result', result);
+    //   if (!found || !Array.isArray(value)) return state
+    //   var result = value.slice()
+    //   if (!action.find || typeof action.find !== 'function') result = result.map(obj => action.cb(obj))
+    //   else result = result.map(obj => {
+    //     const ok = action.find(obj)
+    //     if (ok) return action.cb(obj)
+    //     else return obj
+    //   })
+    //   console.log('Result', result);
 
-      var ok = storeValue(nextState, action.state, result)
-      if (!ok) return state
-      return nextState
+    //   var ok = storeValue(nextState, action.state, result)
+    //   if (!ok) return state
+    //   return nextState
 
-    case 'FUNCTION':
-      if (!action.state || typeof action.state !== 'string' || !action.cb || typeof action.cb !== 'function') return state
-      var nextState = Object.assign({}, state)
-      var {
-        found,
-        value
-      } = loadValue(nextState, action.state)
-      if (!found) return state
-      var result = action.cb(value)
-      if (result === undefined) return state
-      return result
+    // case 'FUNCTION':
+    //   if (!action.state || typeof action.state !== 'string' || !action.cb || typeof action.cb !== 'function') return state
+    //   var nextState = Object.assign({}, state)
+    //   var {
+    //     found,
+    //     value
+    //   } = loadValue(nextState, action.state)
+    //   if (!found) return state
+    //   var result = action.cb(value)
+    //   if (result === undefined) return state
+    //   return result
 
     default:
       return state

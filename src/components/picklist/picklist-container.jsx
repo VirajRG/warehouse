@@ -14,7 +14,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 const mapStateToProps = state => {
     return {
-      user:state.user.username
+      bins: state.bins,
+      items: state.items
     };
 };
 
