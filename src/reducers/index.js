@@ -6,6 +6,25 @@ const reducers = (state = initialState, action) => {
       return {
         items: action.items
       }
+    case 'DECREASE_QUANTITY':
+      let newQuant = 0;
+      return {
+        items: state.items.map(item => {
+
+          const currentItem =
+            item.pickListNo == action.pickListNo
+            && item.binName === action.binName
+            && item.barcode == action.barcode;
+
+            if(currentItem) newQuant = item.quantityLeft-1;
+
+          return (currentItem)
+            ? { ...item, quantityLeft: newQuant }
+            : item
+        }
+        )
+
+      }
     // case 'SET':
     //   if (!action.state || typeof action.state !== 'string' || action.value === undefined) return state
     //   var nextState = Object.assign({}, state)

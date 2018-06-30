@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Row, Col, Icon, Button, Layout, message, List, Avatar } from 'antd';
+import { Row, Col, Icon, Button, Layout, message, List, Avatar, Input } from 'antd';
+import history from '../../history';
+// import { Howl, Howler } from 'howler';
 const { Header, Content } = Layout;
 
 const IconText = ({ type, color, quantity }) => {
@@ -17,8 +19,74 @@ const IconText = ({ type, color, quantity }) => {
 }
 
 export default class PickList extends Component {
-  render() {
+  
+  constructor(props) {
+    super(props);
+    this.nextList = this.nextList.bind(this);
+  }
 
+  componentDidMount(){
+    this.barcodeInput.focus();
+  }
+
+  nextList = () => {
+    const currentPickList = this.props.match.params.pickListNo;
+    const currentBinName = this.props.match.params.binName;
+
+    let nextPickList;
+    let nextBinName;
+
+    let currentPageIndex = this.props.items.findIndex(item =>
+      (item.binName == currentBinName
+        && item.pickListNo == currentPickList)
+    );
+
+    let nextPageItem = this.props.items.slice(currentPageIndex + 1).find(item => {
+      return (item.binName != currentBinName
+        || item.pickListNo != currentPickList)
+        && item.pickListNo >= currentPickList
+    });
+
+    if (typeof nextPageItem === 'undefined') {
+      message.error("End");
+      return;
+    }
+
+    nextPickList = nextPageItem.pickListNo;
+    nextBinName = nextPageItem.binName;
+    history.push("/" + nextPickList + "/" + nextBinName);
+  }
+
+  onBarcodeDetected = (e) => {
+    const currentPickList = this.props.match.params.pickListNo;
+    const currentBinName = this.props.match.params.binName;
+    const barcode = e.target.value;
+    e.target.value = '';
+    e.target.autoFocus;
+
+    this.props.items.forEach(item => {
+      if (
+        item.pickListNo == currentPickList
+        && item.binName === currentBinName
+        && item.barcode == barcode
+        && (item.quantityLeft > 0)
+      ) {
+        // const sound = new Howl({src: ['beep.mp3']});        
+        // sound.play();
+
+        message.success("Item found");
+        console.log("Item found:", barcode);
+        this.props.barcodeMatched(currentPickList, currentBinName, barcode);
+      }
+    });
+
+  }
+
+  blurredOut = () => {
+    this.barcodeInput.focus();
+  }
+
+  render() {
     const currentPickList = this.props.match.params.pickListNo;
     const currentBinName = this.props.match.params.binName;
     let totalItems = 0;
@@ -26,14 +94,14 @@ export default class PickList extends Component {
 
     let currentData = this.props.items.filter(item => {
       const currentItem =
-        item.pickListNo == currentPickList && item.binName === currentBinName && (item.quantityLeft > 0);
+        item.pickListNo == currentPickList && item.binName === currentBinName;
       if (currentItem) {
         scanLeft += item.quantityLeft;
         totalItems += item.quantity;
       }
-      return currentItem
+      return currentItem && (item.quantityLeft > 0)
     });
-    console.log(currentData, currentPickList, currentBinName);
+    // console.log(currentData, currentPickList, currentBinName);
 
     return (
       <div className="pick-list-page">
@@ -45,16 +113,22 @@ export default class PickList extends Component {
             <Col className="col" xs={{ span: 12, offset: 6 }}>
               <Row>
                 <Col xs={{ span: 12 }}>
-                  <h2 style={{marginBottom: '0px'}}>Picklist No: <span style={{color: "#909090", fontSize: '32px'}}>{currentPickList}</span></h2>
-                  <h2 style={{marginBottom: '0px'}}>Bin Name: <span style={{color: "#909090", fontSize: '32px'}}>{currentBinName}</span></h2>
+                  <h2 style={{ marginBottom: '0px' }}>Picklist No: <span style={{ color: "#909090", fontSize: '32px' }}>{currentPickList}</span></h2>
+                  <h2 style={{ marginBottom: '0px' }}>Bin Name: <span style={{ color: "#909090", fontSize: '32px' }}>{currentBinName}</span></h2>
+                  <Input
+                    ref={(input) => { this.barcodeInput = input; }}
+                    placeholder="barcode here"
+                    onChange={this.onBarcodeDetected}
+                    onBlur={this.blurredOut}
+                  />
                 </Col>
                 <Col xs={{ span: 12 }}>
-              <span className="icon" style={{ display: "block", textAlign: "end" }}>
-                <Button onClick={this.createList}>
-                  Next
+                  <span className="icon" style={{ display: "block", textAlign: "end" }}>
+                    <Button onClick={this.nextList}>
+                      Next
                   <Icon type="right" />
-                </Button>
-              </span>
+                    </Button>
+                  </span>
                 </Col>
               </Row>
               <h2>

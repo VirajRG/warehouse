@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import PickList from './picklist';
 import { withRouter } from 'react-router-dom'
+import { decreaseQuantity } from '../../actions';
   
 
 const mapDispatchToProps = (dispatch) => {
@@ -8,14 +9,11 @@ const mapDispatchToProps = (dispatch) => {
       upload : () => {
         console.log("upload");
       },
-      uploadFiles : (file) => {
-        console.log(file);
-      }
+      barcodeMatched : (pickListNo, binName, barcode) => dispatch(decreaseQuantity(pickListNo, binName, barcode))
     };
 };
 const mapStateToProps = state => {
     return {
-      bins: state.bins,
       items: state.items
     };
 };
