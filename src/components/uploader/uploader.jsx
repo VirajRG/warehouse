@@ -94,8 +94,7 @@ export default class Uploader extends Component {
     return (
       <div className="uploader-page">
         <Header className="header">
-          <span>Warehouse Uploader</span>
-          <span className="icon"><Icon type="upload" onClick={this.props.upload} /></span>
+          <span>Warehouse Scanner</span>
         </Header>
         <Content className="content">
           <Row>

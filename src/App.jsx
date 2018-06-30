@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import UploaderContainer from './components/uploader/uploader-container';
 import PickListContainer from './components/picklist/picklist-container';
+import SummaryContainer from './components/summary/summary-container';
 import history from './history'
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
       <div>
         <Route exact path="/" component={UploaderContainer} />
         <Route path="/:pickListNo/:binName" component={PickListContainer} />
+        <Route path="/summary" component={SummaryContainer} />
       </div>
       </Router>
     );
