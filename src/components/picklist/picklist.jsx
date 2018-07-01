@@ -48,7 +48,8 @@ export default class PickList extends Component {
     });
 
     if (typeof nextPageItem === 'undefined') {
-      message.error("End");
+      message.success("Picklist completed");
+      history.push('/summary');
       return;
     }
 
@@ -124,7 +125,7 @@ export default class PickList extends Component {
                 </Col>
                 <Col xs={{ span: 12 }}>
                   <span className="icon" style={{ display: "block", textAlign: "end" }}>
-                    <Button onClick={this.nextList}>
+                    <Button onClick={this.nextList} style={{background: scanLeft==0 ? "#87d068" : null}} >
                       Next
                   <Icon type="right" />
                     </Button>

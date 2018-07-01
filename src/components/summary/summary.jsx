@@ -8,6 +8,36 @@ const { Header, Content } = Layout;
 
 export default class Summary extends Component {
 
+  downloadSummary = (data) => {
+    // let book = XLSX.utils.book_new();
+    // let sheet = XLSX.utils.json_to_sheet([{ rowNo: 'Row No', status: 'Staus', A: "Source Short Name", B: "Transaction Type", C: "Customer-Vendor Name", D: "Cp Gstin No", E: "Party Stname", F: "Department", G: "Entry Date", H: "Entry No", I: "Document Date", J: "Document No", K: "Tradegroup", M: "Qty", N: "Basic Amt", O: "Tax rate", P: "IGST", Q: "Gross Amount", R: "Round Off", S: "Gross Amt", T: "CGST", U: "IGST" }, ...results], { header: ["rowNo", "status", 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'] });
+    // XLSX.utils.book_append_sheet(book, sheet, "errors");
+    // XLSX.writeFile(book, 'gst_error_sheet.xlsx')
+    
+    let headers = {
+      pickListNo: 'Pick List No.',
+      binName: 'Bin Name',
+      barcode: 'Barcode',
+      style: 'Style No.',
+      color: 'Color',
+      size: 'Size',
+      mrp: 'MRP',
+      quantityLeft: 'Quantity Left',
+      orderNo: 'Order No.',
+      reservationNo: 'Reservation No.'
+    }
+    
+    data.unshift(headers);
+    console.log(data);
+
+    let ws = XLSX.utils.json_to_sheet(data, {skipHeader: true});
+
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Summary");
+
+    XLSX.writeFile(wb, "summary.xlsx");
+  }
+
   render() {
 
     const columns = [
@@ -58,7 +88,19 @@ export default class Summary extends Component {
         <Content className="content">
           <Row>
             <Col className="col" xs={{ span: 18, offset: 3 }}>
-              <h1>Items not scanned :</h1>
+              <Row>
+                <Col xs={{ span: 12 }}>
+                  <h1>Items not scanned :</h1>
+                </Col>
+                <Col xs={{ span: 12 }}>
+                  <span className="icon" style={{ display: "block", textAlign: "end" }}>
+                    <Button onClick={() => this.downloadSummary(dataSource)}>
+                      Download
+                  <Icon type="download" />
+                    </Button>
+                  </span>
+                </Col>
+              </Row>
               <Table dataSource={dataSource} columns={columns} />
             </Col>
           </Row>
