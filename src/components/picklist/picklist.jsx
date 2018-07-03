@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Icon, Button, Layout, message, List, Avatar, Input } from 'antd';
 import history from '../../history';
-// import { Howl, Howler } from 'howler';
+import { Howl, Howler } from 'howler';
 const { Header, Content } = Layout;
 
 const IconText = ({ type, color, quantity }) => {
@@ -64,6 +64,7 @@ export default class PickList extends Component {
     const barcode = e.target.value;
     e.target.value = '';
     e.target.autoFocus;
+    let found = false;
 
     this.props.items.forEach(item => {
       if (
@@ -72,15 +73,20 @@ export default class PickList extends Component {
         && item.barcode == barcode
         && (item.quantityLeft > 0)
       ) {
-        // const sound = new Howl({src: ['beep.mp3']});        
-        // sound.play();
-
+        const sound = new Howl({src: ['/found.mp3']});
+        sound.play();
         message.success("Item found");
         console.log("Item found:", barcode);
+        found = true;
         this.props.barcodeMatched(currentPickList, currentBinName, barcode);
       }
     });
-
+    
+    if(!found){
+      const sound = new Howl({src: ['/noMatch.mp3']});
+      sound.play();
+      message.error("Not found");
+    }
   }
 
   blurredOut = () => {
@@ -103,6 +109,11 @@ export default class PickList extends Component {
       return currentItem && (item.quantityLeft > 0)
     });
     // console.log(currentData, currentPickList, currentBinName);
+    if(scanLeft <= 0){
+      const sound = new Howl({src: ['/binCompleted.mp3']});
+      sound.play();
+      message.info("Bin completed");
+    }
 
     return (
       <div className="pick-list-page">
