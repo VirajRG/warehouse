@@ -87,7 +87,7 @@ export default class Summary extends Component {
         </Header>
         <Content className="content">
           <Row>
-            <Col className="col" xs={{ span: 18, offset: 3 }}>
+            <Col className="col" xs={{ span: 22, offset: 1 }}>
               <Row>
                 <Col xs={{ span: 12 }}>
                   <h1>Items not scanned :</h1>

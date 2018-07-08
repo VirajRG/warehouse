@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Row, Col, Icon, Button, Layout, message, List, Avatar, Input } from 'antd';
 import history from '../../history';
 import { Howl, Howler } from 'howler';
@@ -119,6 +120,9 @@ export default class PickList extends Component {
       <div className="pick-list-page">
         <Header className="header">
           <span>Scan Items</span>
+          <Link to="/summary">
+            <span className="icon"><Icon type="bars" onClick={this.props.upload} /></span>
+          </Link>
         </Header>
         <Content className="content">
           <Row>
