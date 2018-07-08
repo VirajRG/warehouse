@@ -49,7 +49,7 @@ export default class PickList extends Component {
     });
 
     if (typeof nextPageItem === 'undefined') {
-      message.success("Picklist completed");
+      message.success("Picklists completed");
       history.push('/summary');
       return;
     }
@@ -100,6 +100,10 @@ export default class PickList extends Component {
     let totalItems = 0;
     let scanLeft = 0;
 
+    let currentOrderNo = this.props.items.find(item => {
+      return(item.pickListNo == currentPickList)
+    }).orderNo;
+
     let currentData = this.props.items.filter(item => {
       const currentItem =
         item.pickListNo == currentPickList && item.binName === currentBinName;
@@ -114,6 +118,7 @@ export default class PickList extends Component {
       const sound = new Howl({src: ['/binCompleted.mp3']});
       sound.play();
       message.info("Bin completed");
+      this.nextList();
     }
 
     return (
@@ -129,7 +134,7 @@ export default class PickList extends Component {
             <Col className="col" xs={{ span: 12, offset: 6 }}>
               <Row>
                 <Col xs={{ span: 12 }}>
-                  <h2 style={{ marginBottom: '0px' }}>Order No: <span style={{ color: "#909090", fontSize: '32px' }}>{currentData[0].orderNo}</span></h2>
+                  <h2 style={{ marginBottom: '0px' }}>Order No: <span style={{ color: "#909090", fontSize: '32px' }}>{currentOrderNo}</span></h2>
                   <h2 style={{ marginBottom: '0px' }}>Bin Name: <span style={{ color: "#909090", fontSize: '32px' }}>{currentBinName}</span></h2>
                   <Input
                     ref={(input) => { this.barcodeInput = input; }}
