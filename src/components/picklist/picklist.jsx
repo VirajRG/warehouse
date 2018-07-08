@@ -43,13 +43,12 @@ export default class PickList extends Component {
     );
 
     let nextPageItem = this.props.items.slice(currentPageIndex + 1).find(item => {
-      return (item.binName != currentBinName
-        || item.pickListNo != currentPickList)
-        && item.pickListNo >= currentPickList
+      return (item.binName != currentBinName)
+        && item.pickListNo == currentPickList
     });
 
     if (typeof nextPageItem === 'undefined') {
-      message.success("Picklists completed");
+      message.success("This order has been completed");
       history.push('/searchOrderNo');
       return;
     }
