@@ -50,7 +50,7 @@ export default class PickList extends Component {
 
     if (typeof nextPageItem === 'undefined') {
       message.success("Picklists completed");
-      history.push('/summary');
+      history.push('/searchOrderNo');
       return;
     }
 

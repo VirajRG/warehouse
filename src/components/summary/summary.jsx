@@ -84,6 +84,9 @@ export default class Summary extends Component {
           <Link to="/">
             <span className="icon"><Icon type="upload" onClick={this.props.upload} /></span>
           </Link>
+          <Link to="/searchOrderNo">
+            <span className="icon"><Icon type="search" onClick={this.props.upload} /></span>
+          </Link>
         </Header>
         <Content className="content">
           <Row>
