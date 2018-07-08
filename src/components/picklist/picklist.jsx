@@ -62,6 +62,8 @@ export default class PickList extends Component {
     const currentPickList = this.props.match.params.pickListNo;
     const currentBinName = this.props.match.params.binName;
     const barcode = e.target.value;
+    if(barcode.length !== 13)
+      return;
     e.target.value = '';
     e.target.autoFocus;
     let found = false;
