@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
-import { Row, Col, Icon, Button, Upload, Layout, message } from 'antd';
+import { Row, Col, Icon, Button, Upload, Layout, message, Input } from 'antd';
 import * as XLSX from 'xlsx';
 import history from '../../history';
 const { Header, Content } = Layout;
@@ -31,6 +31,7 @@ export default class Uploader extends Component {
           data: csvData
         });
         message.success("File uploaded successfully");
+        this.createList();
         return false;
       }
       message.error("Please upload the correct file");
@@ -79,7 +80,26 @@ export default class Uploader extends Component {
     console.log(items);
     console.log("No. of picklists: ", pickListNo);
     this.props.createList(items);
-    history.push("./"+items[0].pickListNo+"/"+items[0].binName);
+    // history.push("./"+items[0].pickListNo+"/"+items[0].binName);
+  }
+
+  scanItems = () => {
+    const orderNoInput = document.getElementById('orderNoInput');
+    const searchOrderNo = orderNoInput.value;
+    if(searchOrderNo === ""){
+      message.error("Please enter an OrderNo.");
+      return;
+    }    
+
+    let scanItem = this.props.items.find(item => {return(item.orderNo === searchOrderNo)});
+
+    if (typeof scanItem === 'undefined') {
+      message.error("Order No. not found");
+      return;
+    }
+
+    console.log(scanItem);
+    history.push("./"+scanItem.pickListNo+"/"+scanItem.binName);
   }
 
   render() {
@@ -114,10 +134,14 @@ export default class Uploader extends Component {
                 </Upload>
               </div>
               {this.state.uploaded
-                ? <Button onClick={this.createList}>
+                ? 
+                <div>
+                <Input placeholder="Order No." id="orderNoInput" style={{ marginBottom: 16}}/>
+                <Button onClick={this.scanItems}>
                   Scan Items
                   <Icon type="right" />
                 </Button>
+                </div>
                 : null}
             </Col>
           </Row>

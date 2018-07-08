@@ -125,7 +125,7 @@ export default class PickList extends Component {
             <Col className="col" xs={{ span: 12, offset: 6 }}>
               <Row>
                 <Col xs={{ span: 12 }}>
-                  <h2 style={{ marginBottom: '0px' }}>Picklist No: <span style={{ color: "#909090", fontSize: '32px' }}>{currentPickList}</span></h2>
+                  <h2 style={{ marginBottom: '0px' }}>Order No: <span style={{ color: "#909090", fontSize: '32px' }}>{currentData[0].orderNo}</span></h2>
                   <h2 style={{ marginBottom: '0px' }}>Bin Name: <span style={{ color: "#909090", fontSize: '32px' }}>{currentBinName}</span></h2>
                   <Input
                     ref={(input) => { this.barcodeInput = input; }}
