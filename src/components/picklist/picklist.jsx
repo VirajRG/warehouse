@@ -20,13 +20,13 @@ const IconText = ({ type, color, quantity }) => {
 }
 
 export default class PickList extends Component {
-  
+
   constructor(props) {
     super(props);
     this.nextList = this.nextList.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.barcodeInput.focus();
   }
 
@@ -62,7 +62,7 @@ export default class PickList extends Component {
     const currentPickList = this.props.match.params.pickListNo;
     const currentBinName = this.props.match.params.binName;
     const barcode = e.target.value;
-    if(barcode.length < 13)
+    if (barcode.length < 13)
       return;
     e.target.value = '';
     e.target.autoFocus;
@@ -75,7 +75,7 @@ export default class PickList extends Component {
         && item.barcode == barcode
         && (item.quantityLeft > 0)
       ) {
-        const sound = new Howl({src: ['/found.mp3']});
+        const sound = new Howl({ src: ['/found.mp3'] });
         sound.play();
         message.success("Item found");
         console.log("Item found:", barcode);
@@ -83,9 +83,9 @@ export default class PickList extends Component {
         this.props.barcodeMatched(currentPickList, currentBinName, barcode);
       }
     });
-    
-    if(!found){
-      const sound = new Howl({src: ['/noMatch.mp3']});
+
+    if (!found) {
+      const sound = new Howl({ src: ['/noMatch.mp3'] });
       sound.play();
       message.error("Not found");
     }
@@ -102,7 +102,7 @@ export default class PickList extends Component {
     let scanLeft = 0;
 
     let currentOrderNo = this.props.items.find(item => {
-      return(item.pickListNo == currentPickList)
+      return (item.pickListNo == currentPickList)
     }).orderNo;
 
     let currentData = this.props.items.filter(item => {
@@ -114,9 +114,20 @@ export default class PickList extends Component {
       }
       return currentItem && (item.quantityLeft > 0)
     });
+
+    let scannedData = this.props.items.filter(item => {
+      const currentItem =
+        item.pickListNo == currentPickList && item.binName === currentBinName;
+      if (currentItem) {
+        scanLeft += item.quantityLeft;
+        totalItems += item.quantity;
+      }
+      return currentItem && ((item.quantity - item.quantityLeft) > 0)
+    });
+
     // console.log(currentData, currentPickList, currentBinName);
-    if(scanLeft <= 0){
-      const sound = new Howl({src: ['/binCompleted.mp3']});
+    if (scanLeft <= 0) {
+      const sound = new Howl({ src: ['/binCompleted.mp3'] });
       sound.play();
       message.info("Bin completed");
       this.nextList();
@@ -132,9 +143,9 @@ export default class PickList extends Component {
         </Header>
         <Content className="content">
           <Row>
-            <Col className="col" xs={{ span: 12, offset: 6 }}>
+            <Col className="col" xs={{ span: 20, offset: 2 }}>
               <Row>
-                <Col xs={{ span: 12 }}>
+                <Col xs={{ span: 10 }}>
                   <h2 style={{ marginBottom: '0px' }}>Order No: <span style={{ color: "#909090", fontSize: '28px' }}>{currentOrderNo}</span></h2>
                   <h2 style={{ marginBottom: '0px' }}>Bin Name: <span style={{ color: "#909090", fontSize: '28px' }}>{currentBinName}</span></h2>
                   <Input
@@ -143,38 +154,55 @@ export default class PickList extends Component {
                     onChange={this.onBarcodeDetected}
                     onBlur={this.blurredOut}
                   />
+                  <h2>
+                    All: <span style={{ color: 'blue', fontSize: '32px', paddingRight: '64px' }}>{totalItems} </span>
+                    Scanned: <span style={{ color: '#87d068', fontSize: '32px', paddingRight: '64px' }}>{totalItems - scanLeft}</span>
+                    Pending: <span style={{ color: 'red', fontSize: '32px', paddingRight: '64px' }}>{scanLeft} </span>
+                  </h2>
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={currentData}
+                    renderItem={item => (
+                      <List.Item
+                        key={item.PickList + item.binName}
+                        actions={[<IconText type="barcode" color="black" quantity={item.quantityLeft} />,
+                        <IconText type="check-circle" color="#87d068" quantity={item.quantity - item.quantityLeft} />]}
+                      >
+                        <List.Item.Meta
+                          avatar={<Avatar icon="form" />}
+                          title={<span >{item.barcode}</span>}
+                          description={<span>{"Style No: " + item.style + "  ,  Color: " + item.color + " ,  Size: " + item.size}</span>}
+                        />
+                      </List.Item>
+                    )}
+                  />
                 </Col>
-                <Col xs={{ span: 12 }}>
-                  <span className="icon" style={{ display: "block", textAlign: "end" }}>
-                    <Button onClick={this.nextList} style={{background: scanLeft==0 ? "#87d068" : null}} >
+                <Col xs={{ span: 10, offset: 2 }}>
+                  <span className="icon" style={{ display: "block", marginBottom: "16px" }}>
+                    <Button onClick={this.nextList} style={{ background: scanLeft == 0 ? "#87d068" : null }} >
                       Next
                   <Icon type="right" />
                     </Button>
                   </span>
+                  <h2>Scanned Items: </h2>
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={scannedData}
+                    renderItem={item => (
+                      <List.Item
+                        key={item.PickList + item.binName}
+                        actions={[<IconText type="check-circle" color="#87d068" quantity={item.quantity - item.quantityLeft} />]}
+                      >
+                        <List.Item.Meta
+                          avatar={<Avatar icon="form" />}
+                          title={<span >{item.barcode}</span>}
+                          description={<span>{"Style No: " + item.style + "  ,  Color: " + item.color + " ,  Size: " + item.size}</span>}
+                        />
+                      </List.Item>
+                    )}
+                  />
                 </Col>
               </Row>
-              <h2>
-                All: <span style={{ color: 'blue', fontSize: '32px', paddingRight: '64px' }}>{totalItems} </span>
-                Scanned: <span style={{ color: '#87d068', fontSize: '32px', paddingRight: '64px' }}>{totalItems - scanLeft}</span>
-                Pending: <span style={{ color: 'red', fontSize: '32px', paddingRight: '64px' }}>{scanLeft} </span>
-              </h2>
-              <List
-                itemLayout="horizontal"
-                dataSource={currentData}
-                renderItem={item => (
-                  <List.Item
-                    key={item.PickList + item.binName}
-                    actions={[<IconText type="barcode" color="black" quantity={item.quantityLeft} />,
-                    <IconText type="check-circle" color="#87d068" quantity={item.quantity - item.quantityLeft} />]}
-                  >
-                    <List.Item.Meta
-                      avatar={<Avatar icon="form" />}
-                      title={<span >{item.barcode}</span>}
-                      description={<span>{"Style No: " + item.style + "  ,  Color: " + item.color + " ,  Size: " + item.size}</span>}
-                    />
-                  </List.Item>
-                )}
-              />
             </Col>
           </Row>
         </Content>
