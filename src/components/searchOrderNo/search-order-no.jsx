@@ -31,7 +31,7 @@ export default class SearchOrderNo extends Component {
       <div className="uploader-page">
         <Header className="header">
           <span>Warehouse Scanner</span>
-          <Link to="/upload">
+          <Link to="/">
             <span className="icon"><Icon type="upload" onClick={this.props.upload} /></span>
           </Link>
           <Link to="/summary">
