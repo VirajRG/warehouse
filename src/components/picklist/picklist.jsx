@@ -118,10 +118,6 @@ export default class PickList extends Component {
     let scannedData = this.props.items.filter(item => {
       const currentItem =
         item.pickListNo == currentPickList && item.binName === currentBinName;
-      if (currentItem) {
-        scanLeft += item.quantityLeft;
-        totalItems += item.quantity;
-      }
       return currentItem && ((item.quantity - item.quantityLeft) > 0)
     });
 
