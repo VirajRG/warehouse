@@ -22,6 +22,7 @@ export default class Summary extends Component {
       color: 'Color',
       size: 'Size',
       mrp: 'MRP',
+      quantity:'Quantity',
       quantityLeft: 'Quantity Left',
       orderNo: 'Order No.',
       reservationNo: 'Reservation No.'
@@ -58,6 +59,10 @@ export default class Summary extends Component {
         title: 'Quantity Left', dataIndex: 'quantityLeft', key: 'quantityLeft',
         align: 'center', render: text => <span style={{ color: 'red', fontSize: '22px' }}>{text}</span>
       },
+      {
+        title: 'Quantity', dataIndex: 'quantity', key: 'quantity',
+        align: 'center', render: text => <span style={{ color: 'red', fontSize: '22px' }}>{text}</span>
+      },
       { title: 'Order No.', dataIndex: 'orderNo', key: 'orderNo' },
       { title: 'Reservation No.', dataIndex: 'reservationNo', key: 'reservationNo' },
     ];
@@ -72,6 +77,7 @@ export default class Summary extends Component {
           color: item.color,
           size: item.size,
           mrp: item.mrp,
+          quantity: item.quantity,
           quantityLeft: item.quantityLeft,
           orderNo: item.orderNo,
           reservationNo: item.reservationNo
@@ -88,6 +94,7 @@ export default class Summary extends Component {
           color: item.color,
           size: item.size,
           mrp: item.mrp,
+          quantity: item.quantity,
           quantityLeft: item.quantityLeft,
           orderNo: item.orderNo,
           reservationNo: item.reservationNo
