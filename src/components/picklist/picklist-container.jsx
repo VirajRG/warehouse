@@ -6,9 +6,12 @@ import { decreaseQuantity } from '../../actions';
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      barcodeMatched : (pickListNo, binName, barcode) => 
-        dispatch(decreaseQuantity(pickListNo, binName, barcode))
+      barcodeMatched : (pickListNo, binName, barcode) => {
+				dispatch(decreaseQuantity(pickListNo, binName, barcode))
+				console.log(pickListNo, binName, barcode);
+			},
     };
+
 };
 const mapStateToProps = state => {
     return {

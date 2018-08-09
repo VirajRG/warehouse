@@ -5,7 +5,9 @@ import { createList } from '../../actions';
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      createList : (items) => dispatch(createList(items))
+      createList : (items) => {
+        dispatch(createList(items));
+      } 
     };
 };
 const mapStateToProps = state => {
